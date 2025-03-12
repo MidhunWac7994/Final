@@ -4,34 +4,31 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const useSearchLogic = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  
-  const initialQuery = new URLSearchParams(location.search).get("q") || "";
-  
+
+  // Initialize state based on URL query parameters
+  const initialQuery = new URLSearchParams(location.search).get('q') || '';
+  const initialClient = new URLSearchParams(location.search).get('client') || 'english';
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
+  const [selectedClient, setSelectedClient] = useState(initialClient);
   const [currentPage, setCurrentPage] = useState(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const pageParam = searchParams.get("page");
+    const pageParam = new URLSearchParams(location.search).get('page');
     return pageParam ? parseInt(pageParam) : 1;
   });
-
-  const initialClient = new URLSearchParams(location.search).get("client") || "english";
-  const [selectedClient, setSelectedClient] = useState(initialClient);
   
-  const [sortBy, setSortBy] = useState("1"); // Default "1" for Relevance
   const [filters, setFilters] = useState({
     brands: [],
     categories: [],
     models: [],
     priceRange: [0, 10000],
   });
-  const [searchQuery, setSearchQuery] = useState(initialQuery);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const brands = searchParams.get("brands")?.split(",") || [];
-    const categories = searchParams.get("categories")?.split(",") || [];
-    const models = searchParams.get("models")?.split(",") || [];
-    const priceMin = parseInt(searchParams.get("priceMin")) || 0;
-    const priceMax = parseInt(searchParams.get("priceMax")) || 10000;
+    const brands = searchParams.get('brands')?.split(',') || [];
+    const categories = searchParams.get('categories')?.split(',') || [];
+    const models = searchParams.get('models')?.split(',') || [];
+    const priceMin = parseInt(searchParams.get('priceMin')) || 0;
+    const priceMax = parseInt(searchParams.get('priceMax')) || 10000;
 
     setFilters({
       brands,
@@ -43,41 +40,41 @@ const useSearchLogic = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    searchParams.set("q", searchQuery);
-    searchParams.set("client", selectedClient);
+    searchParams.set('q', searchQuery);
+    searchParams.set('client', selectedClient);
 
     if (filters.brands.length > 0) {
-      searchParams.set("brands", filters.brands.join(","));
+      searchParams.set('brands', filters.brands.join(','));
     } else {
-      searchParams.delete("brands");
+      searchParams.delete('brands');
     }
 
     if (filters.categories.length > 0) {
-      searchParams.set("categories", filters.categories.join(","));
+      searchParams.set('categories', filters.categories.join(','));
     } else {
-      searchParams.delete("categories");
+      searchParams.delete('categories');
     }
 
     if (filters.models.length > 0) {
-      searchParams.set("models", filters.models.join(","));
+      searchParams.set('models', filters.models.join(','));
     } else {
-      searchParams.delete("models");
+      searchParams.delete('models');
     }
 
-    searchParams.set("priceMin", filters.priceRange[0].toString());
-    searchParams.set("priceMax", filters.priceRange[1].toString());
+    searchParams.set('priceMin', filters.priceRange[0].toString());
+    searchParams.set('priceMax', filters.priceRange[1].toString());
 
     if (currentPage !== 1) {
-      searchParams.set("page", currentPage.toString());
+      searchParams.set('page', currentPage.toString());
     } else {
-      searchParams.delete("page");
+      searchParams.delete('page');
     }
 
     navigate(`?${searchParams.toString()}`, { replace: true });
   }, [filters, searchQuery, currentPage, selectedClient, location.search, navigate]);
 
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= Math.ceil(filters.totalItems / 28)) {
+    if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
@@ -88,14 +85,14 @@ const useSearchLogic = () => {
   };
 
   const handleFilterChange = (type, value) => {
-    if (type === "brands" || type === "categories" || type === "models") {
+    if (type === 'brands' || type === 'categories' || type === 'models') {
       setFilters({
         ...filters,
         [type]: filters[type].includes(value)
           ? filters[type].filter((item) => item !== value)
           : [...filters[type], value],
       });
-    } else if (type === "priceRange") {
+    } else if (type === 'priceRange') {
       setFilters({
         ...filters,
         priceRange: value,

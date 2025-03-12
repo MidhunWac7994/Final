@@ -72,7 +72,7 @@ const clientConfig = {
     indexName: "cv8mpreahlm7632gb530"
   },
   arabic: {
-    clientId: "5807942863",
+    clientId: "5807942863", 
     secretKey: "Llz5MR37gZ4gJULMwf762w1lQ13Iro",
     indexName: "qa-ar"
   }
@@ -119,8 +119,7 @@ const SearchPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const initialQuery = new URLSearchParams(location.search).get("q") || "";
-  
-  // Initialize current page from URL parameters
+
   const [currentPage, setCurrentPage] = useState(() => {
     const searchParams = new URLSearchParams(location.search);
     const pageParam = searchParams.get("page");
@@ -130,12 +129,12 @@ const SearchPage = () => {
   const initialClient = new URLSearchParams(location.search).get("client") || "english";
   const [selectedClient, setSelectedClient] = useState(initialClient);
   
-  const [sortBy, setSortBy] = useState("1"); // "1" for Relevance
+  const [sortBy, setSortBy] = useState("1"); 
   const [filters, setFilters] = useState({
     brands: [],
     categories: [],
-    models: [], // Added models filter
-    priceRange: [0, 10000], // Default price range
+    models: [], 
+    priceRange: [0, 10000], 
   });
   const [searchQuery, setSearchQuery] = useState(initialQuery);
 
@@ -143,19 +142,19 @@ const SearchPage = () => {
     const searchParams = new URLSearchParams(location.search);
     const brands = searchParams.get("brands")?.split(",") || [];
     const categories = searchParams.get("categories")?.split(",") || [];
-    const models = searchParams.get("models")?.split(",") || []; // Added models
+    const models = searchParams.get("models")?.split(",") || []; 
     const priceMin = parseInt(searchParams.get("priceMin")) || 0;
     const priceMax = parseInt(searchParams.get("priceMax")) || 10000;
 
     setFilters({
       brands,
       categories,
-      models, // Added models
+      models, 
       priceRange: [priceMin, priceMax],
     });
   }, [location.search]);
 
-  // Update URL when filters or search query changes
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("q", searchQuery);
@@ -173,7 +172,7 @@ const SearchPage = () => {
       searchParams.delete("categories");
     }
 
-    if (filters.models.length > 0) { // Added models
+    if (filters.models.length > 0) { 
       searchParams.set("models", filters.models.join(","));
     } else {
       searchParams.delete("models");
@@ -182,7 +181,7 @@ const SearchPage = () => {
     searchParams.set("priceMin", filters.priceRange[0].toString());
     searchParams.set("priceMax", filters.priceRange[1].toString());
     
-    // Update page parameter based on current page
+    
     if (currentPage !== 1) {
       searchParams.set("page", currentPage.toString());
     } else {
@@ -250,7 +249,7 @@ const SearchPage = () => {
     setFilters({
       brands: [],
       categories: [],
-      models: [], // Reset models
+      models: [], 
       priceRange: [0, 10000],
     });
     setCurrentPage(1);
@@ -263,7 +262,7 @@ const SearchPage = () => {
     }
   };
 
-  // Update the sortOptions to include Relevance, Price: Low to High, and Price: High to Low
+  
   const sortOptions = [
     { value: "1", label: "Relevance" },
     { value: "2", label: "Price: Low to High" },
@@ -346,7 +345,7 @@ const SearchPage = () => {
             <h1>Search Results for: {searchQuery}</h1>
 
             <div className="d-flex align-items-center">
-              {/* Language Dropdown */}
+       
               <div className="d-flex align-items-center me-3">
                 <span className="me-2">Language: </span>
                 <Dropdown onSelect={(key) => setSelectedClient(key)}>
@@ -386,7 +385,7 @@ const SearchPage = () => {
         </Col>
       </Row>
 
-      {/* Search Bar */}
+
       <Row className="mb-4">
         <Col md={{ span: 8, offset: 2 }}>
           <Form onSubmit={handleSearch}>
@@ -408,12 +407,12 @@ const SearchPage = () => {
       </Row>
 
       <Row>
-        {/* Filter Sidebar */}
+
         <Col md={3}>
           <div className="sticky-top" style={{ top: "20px" }}>
             <h4>Filters</h4>
             
-            {/* Brand Filter */}
+          
             <div className="mt-3">
               <h6>Brand</h6>
               <Form>
@@ -429,7 +428,7 @@ const SearchPage = () => {
               </Form>
             </div>
 
-            {/* Category Filter */}
+          
             <div className="mt-3">
               <h6>Category</h6>
               <Form>
@@ -445,7 +444,7 @@ const SearchPage = () => {
               </Form>
             </div>
 
-            {/* Model Filter */}
+          
             <div className="mt-3">
               <h6>Model</h6>
               <Form>
@@ -461,7 +460,7 @@ const SearchPage = () => {
               </Form>
             </div>
 
-            {/* Price Range Slider */}
+
             <div className="mt-3">
               <h6>Price Range</h6>
               <div className="d-flex align-items-center mb-2">

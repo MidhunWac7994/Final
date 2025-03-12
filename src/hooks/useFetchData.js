@@ -3,11 +3,11 @@ import useSWR from 'swr';
 const fetcher = async ([url, query, page, sortBy, filters, config]) => {
   try {
     const response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Client-id": config.clientId,
-        "Secret-key": config.secretKey,
-        "Content-Type": "application/json",
+        'Client-id': config.clientId,
+        'Secret-key': config.secretKey,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         search: query,
@@ -26,13 +26,13 @@ const fetcher = async ([url, query, page, sortBy, filters, config]) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to fetch data");
+      throw new Error(errorData.message || 'Failed to fetch data');
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Fetch error:", error);
+    console.error('Fetch error:', error);
     throw error;
   }
 };
@@ -40,37 +40,37 @@ const fetcher = async ([url, query, page, sortBy, filters, config]) => {
 const useFetchData = (searchQuery, currentPage, sortBy, filters, selectedClient) => {
   const clientConfig = {
     english: {
-      clientId: "7645129791",
-      secretKey: "Qfj1UUkFItWfVFwWpJ65g0VfhjdVGN",
-      indexName: "cv8mpreahlm7632gb530"
+      clientId: '7645129791',
+      secretKey: 'Qfj1UUkFItWfVFwWpJ65g0VfhjdVGN',
+      indexName: 'cv8mpreahlm7632gb530',
     },
     arabic: {
-      clientId: "5807942863",
-      secretKey: "Llz5MR37gZ4gJULMwf762w1lQ13Iro",
-      indexName: "qa-ar"
-    }
+      clientId: '5807942863',
+      secretKey: 'Llz5MR37gZ4gJULMwf762w1lQ13Iro',
+      indexName: 'qa-ar',
+    },
   };
 
   const { data, error, isLoading } = useSWR(
     searchQuery
       ? [
-          "https://uat.search-assist.webc.in/api/search",
+          'https://uat.search-assist.webc.in/api/search',
           searchQuery,
           currentPage,
           sortBy,
           filters,
-          clientConfig[selectedClient]
+          clientConfig[selectedClient],
         ]
       : null,
     fetcher,
-    { 
+    {
       revalidateOnFocus: false,
       onSuccess: (data) => {
-        console.log("API response data:", data);
+        console.log('API response data:', data);
       },
       onError: (error) => {
-        console.error("API error:", error);
-      }
+        console.error('API error:', error);
+      },
     }
   );
 

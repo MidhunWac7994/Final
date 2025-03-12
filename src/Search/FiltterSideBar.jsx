@@ -1,7 +1,7 @@
-import React from 'react';
-import { Form } from 'react-bootstrap';
+import { Form } from "react-bootstrap";
+import CustomSlider from "../hooks/CustomSlider";
 
-const FilterSidebar = ({ data, filters, handleFilterChange }) => {
+const FilterSidebar = ({ filters, handleFilterChange, handlePriceRangeChange, handleResetFilters, data }) => {
   return (
     <div className="sticky-top" style={{ top: "20px" }}>
       <h4>Filters</h4>
@@ -53,6 +53,31 @@ const FilterSidebar = ({ data, filters, handleFilterChange }) => {
           ))}
         </Form>
       </div>
+
+      {/* Price Range Slider */}
+      <div className="mt-3">
+        <h6>Price Range</h6>
+        <div className="d-flex align-items-center mb-2">
+          <span>{filters.priceRange[0]}</span>
+          <span className="mx-2">-</span>
+          <span>{filters.priceRange[1]}</span>
+        </div>
+        <CustomSlider
+          min={0}
+          max={10000}
+          value={filters.priceRange}
+          onChange={handlePriceRangeChange}
+          minDistance={10}
+        />
+      </div>
+
+      {/* Reset Filters Button */}
+      <button
+        className="btn btn-outline-secondary mt-3 w-100"
+        onClick={handleResetFilters}
+      >
+        Reset Filters
+      </button>
     </div>
   );
 };
