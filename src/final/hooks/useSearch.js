@@ -142,7 +142,7 @@ const useSearch = () => {
     error,
     isLoading,
     
-    // Handlers
+
     setSearchQuery,
     handleFilterChange,
     handleResetFilters,
